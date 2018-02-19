@@ -5,6 +5,23 @@ import urllib.request, urllib.error
 import xml.etree.ElementTree as ET
 
 
+def get_all_file_url(base_url, folder_url, xmlns):
+    file_path = []
+    list_url = base_url + '?list-type=2&delimiter=/&prefix=' + folder_url
+    with urllib.request.urlopen(list_url) as list_response:
+        # Make sure corresponding local folder exists
+        list_xml = ET.fromstring(list_response.read())
+        # First save files from this folder, if any
+        for file_item in list_xml.findall('{%s}Contents' % xmlns):
+            for path in file_item.findall('{%s}Key' % xmlns):
+                file_path.append(path.text)
+        for folder_item in list_xml.findall('{%s}CommonPrefixes' % xmlns):
+            for path in folder_item.findall('{%s}Prefix' % xmlns):
+                print('Folder ' + path.text, len(file_path))
+                file_path = file_path + get_all_file_url(base_url, path.text, xmlns)
+    return file_path
+
+
 def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
     list_url = base_url + '?list-type=2&delimiter=/&prefix=' + folder_url
     with urllib.request.urlopen(list_url) as list_response:
@@ -34,10 +51,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--xmlns', type=str, default='http://s3.amazonaws.com/doc/2006-03-01/')
     parser.add_argument('--base_url', type=str, default='https://s3-us-west-2.amazonaws.com/renoworks-all-projects')
-    parser.add_argument('--source_dir', type=str, default='projects/Cuttlefish/uploaded/homeplay/projects/')
+    parser.add_argument('--source_dir', type=str, default='projects/Cuttlefish/uploaded/homeplay/')
     parser.add_argument('--local_base', type=str, default='../renoworks')
     parser.add_argument('--reload', action='store_true')
 
     args = parser.parse_args()
 
     process_folder(args.base_url, args.source_dir, args.xmlns, args.local_base, args.reload)
+    # all_files = get_all_file_url(args.base_url, args.source_dir, args.xmlns)
+    # print(len(all_files))
