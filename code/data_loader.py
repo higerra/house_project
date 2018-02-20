@@ -37,7 +37,7 @@ def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
                 remote_path = base_url + '/' + path.text
                 local_path = local_base + '/' + path.text
                 if os.path.exists(local_path) and not reload:
-                    print('File {} exist, skip'.format(remote_path))
+                    print('File {} exist, skip'.format(path.text))
                     continue
                 print('Downloading ' + path.text)
                 try:
