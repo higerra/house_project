@@ -40,16 +40,21 @@ def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
                 if os.path.exists(local_path) and not reload:
                     print('File exist, skip')
                     continue
-                with urllib.request.urlopen(remote_path) as path_response, open(local_path, 'wb') as f:
-                    shutil.copyfileobj(path_response, f)
+                try:
+                    with urllib.request.urlopen(remote_path) as path_response, open(local_path, 'wb') as f:
+                        shutil.copyfileobj(path_response, f)
+                except urllib.error.HTTPError as e:
+                    print('HTTP error with ' + list_url + ": " + e.reason())
+                except urllib.request.URLError as e:
+                    print('URL error with ' + list_url + ':' + e.reason())
 
         for folder_item in list_xml.findall('{%s}CommonPrefixes' % xmlns):
             for path in folder_item.findall('{%s}Prefix' % xmlns):
                 process_folder(base_url, path.text, xmlns, local_base)
-    except urllib.error.HTTPError:
-        print("HTTP error occurred with " + list_url)
-    except urllib.error.URLError:
-        print('URL error occurred with ' + list_url)
+    except urllib.request.HTTPError as e:
+        print('HTTP error with ' + list_url + ": " + e.reason())
+    except urllib.request.URLError as e:
+        print('URL error with ' + list_url + ':' + e.reason())
 
 
 if __name__ == '__main__':
