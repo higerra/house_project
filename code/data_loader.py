@@ -34,19 +34,19 @@ def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
         # First save files from this folder, if any
         for file_item in list_xml.findall('{%s}Contents' % xmlns):
             for path in file_item.findall('{%s}Key' % xmlns):
-                print('Downloading ' + path.text)
                 remote_path = base_url + '/' + path.text
                 local_path = local_base + '/' + path.text
                 if os.path.exists(local_path) and not reload:
-                    print('File exist, skip')
+                    print('File {} exist, skip'.format(remote_path))
                     continue
+                print('Downloading ' + path.text)
                 try:
                     with urllib.request.urlopen(remote_path) as path_response, open(local_path, 'wb') as f:
                         shutil.copyfileobj(path_response, f)
                 except urllib.error.HTTPError as e:
-                    print('HTTP error with ' + list_url + ": " + e.reason)
+                    print('HTTP error with ' + remote_path + ": " + e.reason)
                 except urllib.request.URLError as e:
-                    print('URL error with ' + list_url + ':' + e.reason)
+                    print('URL error with ' + remote_path + ':' + e.reason)
 
         for folder_item in list_xml.findall('{%s}CommonPrefixes' % xmlns):
             for path in folder_item.findall('{%s}Prefix' % xmlns):
