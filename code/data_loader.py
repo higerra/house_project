@@ -24,7 +24,8 @@ def get_all_file_url(base_url, folder_url, xmlns):
 
 def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
     list_url = base_url + '?list-type=2&delimiter=/&prefix=' + folder_url
-    with urllib.request.urlopen(list_url) as list_response:
+    try:
+        list_response = urllib.request.urlopen(list_url)
         # Make sure corresponding local folder exists
         local_folder = local_base + '/' + folder_url
         if not os.path.exists(local_folder):
@@ -45,6 +46,10 @@ def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
         for folder_item in list_xml.findall('{%s}CommonPrefixes' % xmlns):
             for path in folder_item.findall('{%s}Prefix' % xmlns):
                 process_folder(base_url, path.text, xmlns, local_base)
+    except urllib.error.HTTPError:
+        print("HTTP error occurred with " + list_url)
+    except urllib.error.URLError:
+        print('URL error occurred with ' + list_url)
 
 
 if __name__ == '__main__':
