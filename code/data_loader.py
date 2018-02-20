@@ -44,17 +44,17 @@ def process_folder(base_url, folder_url, xmlns, local_base, reload=False):
                     with urllib.request.urlopen(remote_path) as path_response, open(local_path, 'wb') as f:
                         shutil.copyfileobj(path_response, f)
                 except urllib.error.HTTPError as e:
-                    print('HTTP error with ' + list_url + ": " + e.reason())
+                    print('HTTP error with ' + list_url + ": " + e.reason)
                 except urllib.request.URLError as e:
-                    print('URL error with ' + list_url + ':' + e.reason())
+                    print('URL error with ' + list_url + ':' + e.reason)
 
         for folder_item in list_xml.findall('{%s}CommonPrefixes' % xmlns):
             for path in folder_item.findall('{%s}Prefix' % xmlns):
                 process_folder(base_url, path.text, xmlns, local_base)
     except urllib.request.HTTPError as e:
-        print('HTTP error with ' + list_url + ": " + e.reason())
+        print('HTTP error with ' + list_url + ": " + e.reason)
     except urllib.request.URLError as e:
-        print('URL error with ' + list_url + ':' + e.reason())
+        print('URL error with ' + list_url + ':' + e.reason)
 
 
 if __name__ == '__main__':
