@@ -36,12 +36,12 @@ annotation `*****_anno.npy`. Each subfolder also contains a `dataset.json` file.
 ## Run
 * To run training:
 ```
-python3 code/train_drn.py --mode train --data_dir <path-to-dataset> --model_dir <path-to-output-model-dir>
+python3 code/run_drn.py --mode train --data_dir <path-to-dataset> --model_dir <path-to-output-model-dir>
 ```
-See `code/train_drn.py` for additional arguments.
+See `code/run_drn.py` for additional arguments.
 
 * To run testing:
 ```
-python3 code/train_drn.py --mode test --data_dir <path-to-dataset> --model_dir <path-to-trained-model-dir>
+python3 code/run_drn.py --mode test --data_dir <path-to-dataset> --model_dir <path-to-trained-model-dir>
 ```
 A pretrained model can be downloaded from [here](https://wustl.box.com/s/9nfs4wjiyve4vizr5mdjfsqkucbtbece).
