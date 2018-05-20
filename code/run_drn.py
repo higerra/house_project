@@ -71,7 +71,7 @@ class HouseDataList(torch.utils.data.Dataset):
 """ The following functions defines some additional transformations. """
 
 class RandomHorizontalFlip(object):
-    def __init(self, prob=0.5):
+    def __init__(self, prob=0.5):
         self.prob = prob
 
     def __call__(self, image, label):
