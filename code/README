@@ -1,3 +1,0 @@
-## Overview
-This repository stores code for house semantic segmentation. The base algorithm is the dilated residual network.
-[https://arxiv.org/abs/1705.09914]
