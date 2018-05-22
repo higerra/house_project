@@ -8,8 +8,7 @@ The code performs semantic segmentation for house exteriors. The algorithm is ba
 * numpy, opencv-python, pillow, pydensecrf
 
 ## Dataset format
-An example dataset can be downloaded from [here](https://wustl.box.com/s/m1z4idqrpiji7qhd41pif8zes8ed91g9). The dataset folder
-has the following structure:
+The dataset folder should have the following structure:
 
 ```
 -- dataset1280
@@ -44,4 +43,3 @@ See `code/run_drn.py` for additional arguments.
 ```
 python3 code/run_drn.py --mode test --data_dir <path-to-dataset> --model_dir <path-to-trained-model-dir>
 ```
-A pretrained model can be downloaded from [here](https://wustl.box.com/s/9nfs4wjiyve4vizr5mdjfsqkucbtbece).
